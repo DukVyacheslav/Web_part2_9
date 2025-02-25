@@ -2,8 +2,11 @@
 require_once 'FormValidation.php';
 
 class CustomFormValidation extends FormValidation {
-    public function isValidAnswer($data, $correct_answer) {
-        return $data !== $correct_answer ? "Неверный ответ" : null;
+    public function validateTestAnswers($data) {
+        // Проверка специальных правил для теста
+        if (!isset($data['question1'])) {
+            $this->addError('question1', 'Выберите ответ');
+        }
+        return empty($this->errors);
     }
 }
-?>

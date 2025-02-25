@@ -1,57 +1,47 @@
 <?php
 class FormValidation {
-    private $rules = [];
-    public $errors = []; // Сделал public для доступа в дочерних классах
+    protected $rules = [];
+    protected $errors = [];
 
-    public function setRule($field_name, $validator_name) {
-        $this->rules[$field_name] = $validator_name;
+    public function setRule($field, $validator) {
+        $this->rules[$field][] = $validator;
     }
 
-    public function isNotEmpty($data) {
-        return empty(trim($data)) ? "Поле не должно быть пустым" : null;
-    }
-
-    public function isInteger($data) {
-        return !filter_var($data, FILTER_VALIDATE_INT) ? "Значение должно быть целым числом" : null;
-    }
-
-    public function isEmail($data) {
-        return !filter_var($data, FILTER_VALIDATE_EMAIL) ? "Некорректный email" : null;
-    }
-
-    public function validate($post_array) {
-        $this->errors = [];
-        foreach ($this->rules as $field => $validator) {
-            $data = isset($post_array[$field]) ? $post_array[$field] : '';
-            $error = null;
-
-            switch ($validator) {
-                case 'notEmpty':
-                    $error = $this->isNotEmpty($data);
-                    break;
-                case 'integer':
-                    $error = $this->isInteger($data);
-                    break;
-                case 'email':
-                    $error = $this->isEmail($data);
-                    break;
-            }
-
-            if ($error) {
-                $this->errors[$field] = $error;
+    public function validate($data) {
+        foreach ($this->rules as $field => $validators) {
+            foreach ($validators as $validator) {
+                $value = $data[$field] ?? '';
+                $this->checkRule($field, $value, $validator);
             }
         }
         return empty($this->errors);
     }
 
-    public function showErrors() {
-        if (empty($this->errors)) return '';
-        $html = '<ul style="color: red;">';
-        foreach ($this->errors as $field => $error) {
-            $html .= "<li>Ошибка в поле $field: $error</li>";
+    protected function checkRule($field, $value, $validator) {
+        switch ($validator) {
+            case 'required':
+                if (empty(trim($value))) $this->addError($field, "Поле обязательно");
+                break;
+            case 'email':
+                if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                    $this->addError($field, "Некорректный email");
+                }
+                break;
+            case 'integer':
+                if (!ctype_digit($value)) $this->addError($field, "Должно быть целое число");
+                break;
         }
-        $html .= '</ul>';
-        return $html;
+    }
+
+    protected function addError($field, $message) {
+        $this->errors[$field][] = $message;
+    }
+
+    public function showErrors() {
+        foreach ($this->errors as $fieldErrors) {
+            foreach ($fieldErrors as $error) {
+                echo "<div class='alert alert-danger'>$error</div>";
+            }
+        }
     }
 }
-?>
