@@ -1,73 +1,55 @@
 <?php
-session_start();
+require_once 'Model/Interest.php';
+require_once 'Model/Photo.php';
+require_once 'Model/FormValidation.php';
+require_once 'Model/ResultsVerification.php';
 
-// Автозагрузка классов
-spl_autoload_register(function($className) {
-    $paths = [
-        __DIR__ . '/app/controllers/',
-        __DIR__ . '/app/models/'
-    ];
-    
-    foreach ($paths as $path) {
-        $file = $path . $className . '.php';
-        if (file_exists($file)) {
-            require_once $file;
-            return;
-        }
+$page = isset($_GET['page']) ? $_GET['page'] : 'home';
+
+// Обработка формы "Контакт"
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $page === 'contact') {
+    $validator = new FormValidation();
+    $validator->setRule('name', 'notEmpty');
+    $validator->setRule('email', 'email');
+    $validator->setRule('message', 'notEmpty');
+
+    if ($validator->validate($_POST)) {
+        $success_message = "Форма успешно отправлена!";
+    } else {
+        $error_message = $validator->showErrors();
     }
-});
-
-// Базовый URL
-define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/');
-
-// Маршрутизация
-$request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$page = str_replace(BASE_URL, '', $request);
-$page = $page ?: 'main';
-
-// Обработка маршрутов
-try {
-    switch ($page) {
-        case 'main':
-            $controller = new MainController();
-            $controller->index();
-            break;
-            
-        case 'photo':
-            $controller = new PhotoController();
-            $controller->showGallery();
-            break;
-            
-        case 'interests':
-            $controller = new InterestController();
-            $controller->showInterests();
-            break;
-            
-        case 'contact':
-            $controller = new ContactController();
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $controller->handleForm();
-            } else {
-                $controller->showForm();
-            }
-            break;
-            
-        case 'test':
-            $controller = new TestController();
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $controller->checkTest();
-            } else {
-                $controller->showTest();
-            }
-            break;
-            
-        default:
-            throw new Exception('Страница не найдена', 404);
-    }
-} catch (Exception $e) {
-    // Обработка ошибок
-    http_response_code($e->getCode());
-    echo '<h1>Ошибка ' . $e->getCode() . '</h1>';
-    echo '<p>' . htmlspecialchars($e->getMessage()) . '</p>';
-    exit;
 }
+
+// Обработка формы "Тест"
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $page === 'test') {
+    $validator = new ResultsVerification();
+    $validator->setRule('question1', 'notEmpty');
+    $validator->setRule('question2', 'notEmpty');
+    $validator->setRule('question3', 'notEmpty');
+
+    if ($validator->validate($_POST)) {
+        $test_result = $validator->showResults();
+    } else {
+        $test_errors = $validator->showErrors();
+        $test_result = $validator->showResults();
+    }
+}
+
+// Маршрутизация страниц
+switch ($page) {
+    case 'photoalbum':
+        include 'View/photoalbum.php';
+        break;
+    case 'interests':
+        include 'View/interests.php';
+        break;
+    case 'contact':
+        include 'View/contact.php';
+        break;
+    case 'test':
+        include 'View/test.php';
+        break;
+    default:
+        include 'View/home.php';
+}
+?>

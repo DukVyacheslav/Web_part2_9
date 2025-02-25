@@ -24,28 +24,14 @@
     </nav>
 
     <?php
-    // Вывод сообщений об успехе или ошибках из контроллера
-    if (isset($success_message)) {
-        echo "<p class='success'>$success_message</p>";
-    }
-    if (isset($error_message)) {
-        echo "<div class='error'>$error_message</div>";
-    }
+    if (isset($success_message)) echo "<p class='success'>$success_message</p>";
+    if (isset($error_message)) echo "<div class='error'>$error_message</div>";
     ?>
 
     <form method="post" action="?page=contact">
-        <label>
-            Имя:
-            <input type="text" name="name" value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>">
-        </label>
-        <label>
-            Email:
-            <input type="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
-        </label>
-        <label>
-            Сообщение:
-            <textarea name="message"><?php echo isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''; ?></textarea>
-        </label>
+        <label>Имя: <input type="text" name="name" value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>"></label><br>
+        <label>Email: <input type="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>"></label><br>
+        <label>Сообщение: <textarea name="message"><?php echo isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''; ?></textarea></label><br>
         <input type="submit" value="Отправить">
     </form>
 </body>
