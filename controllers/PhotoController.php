@@ -1,9 +1,11 @@
 <?php
 require_once '../models/Photo.php';
 
-// Получаем данные из модели
-$photos = Photo::getAll();
+class PhotoController {
+    public function handle() {
+        $photos = Photo::getAll();
+        include '../views/photo.php';
+    }
+}
 
-// Подключаем представление
-include '../views/photo.php';
-?>
+(new PhotoController())->handle();
