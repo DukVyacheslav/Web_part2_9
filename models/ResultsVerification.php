@@ -3,14 +3,29 @@ require_once 'CustomFormValidation.php';
 
 class ResultsVerification extends CustomFormValidation {
     private $score = 0;
-    private $total_questions = 3; // Пример: 3 вопроса
+    private $total_questions = 3; // Количество вопросов в тесте
 
     public function validate($post_array) {
+        parent::validate($post_array); // Выполняем базовую валидацию
         $this->score = 0;
-        if (isset($post_array['question1']) && $post_array['question1'] === 'correct_answer1') $this->score++;
-        if (isset($post_array['question2']) && $post_array['question2'] === 'correct_answer2') $this->score++;
-        if (isset($post_array['question3']) && $post_array['question3'] === 'correct_answer3') $this->score++;
-        return parent::validate($post_array);
+
+        // Проверяем правильность ответов
+        if (isset($post_array['question1']) && $post_array['question1'] === '4') $this->score++;
+        if (isset($post_array['question2']) && $post_array['question2'] === 'moscow') $this->score++;
+        if (isset($post_array['question3']) && $post_array['question3'] === '25') $this->score++;
+
+        // Добавляем ошибки для неверных ответов
+        if (isset($post_array['question1']) && $post_array['question1'] !== '4') {
+            $this->errors['question1'] = "Неверный ответ на вопрос 1";
+        }
+        if (isset($post_array['question2']) && $post_array['question2'] !== 'moscow') {
+            $this->errors['question2'] = "Неверный ответ на вопрос 2";
+        }
+        if (isset($post_array['question3']) && $post_array['question3'] !== '25') {
+            $this->errors['question3'] = "Неверный ответ на вопрос 3";
+        }
+
+        return empty($this->errors);
     }
 
     public function showResults() {
