@@ -1,8 +1,8 @@
 <?php
-require_once 'Model/Interest.php';
-require_once 'Model/Photo.php';
-require_once 'Model/FormValidation.php';
-require_once 'Model/ResultsVerification.php';
+require_once 'models/Interest.php';
+require_once 'models/Photo.php';
+require_once 'models/FormValidation.php';
+require_once 'models/ResultsVerification.php';
 
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 
@@ -38,18 +38,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $page === 'test') {
 // Маршрутизация страниц
 switch ($page) {
     case 'photoalbum':
-        include 'View/photoalbum.php';
+        include 'views/photoalbum.php';
         break;
     case 'interests':
-        include 'View/interests.php';
+        include 'views/interests.php';
         break;
     case 'contact':
-        include 'View/contact.php';
+        include 'views/contact.php';
         break;
     case 'test':
-        include 'View/test.php';
+        include 'views/test.php';
         break;
     default:
-        include 'View/home.php';
+        include 'views/home.php';
 }
 ?>
