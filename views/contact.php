@@ -8,9 +8,9 @@
 <body>
     <header>
         <img src="/myproject/public/images/logo.png" alt="Логотип" width="50">
-        <h1>Мой сайт</h1>
+        <h1>Контакт</h1>
         <nav>
-            <a href="?page=home">Главная</a>
+            <a href="?page=home">Главная страница</a>
             <a href="?page=photoalbum">Фотоальбом</a>
             <a href="?page=interests">Мои интересы</a>
             <a href="?page=contact">Контакт</a>
