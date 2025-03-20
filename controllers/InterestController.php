@@ -1,4 +1,13 @@
 <?php
+class Interest {
+    // class properties and methods
+
+    public static function getAll() {
+        // logic to get all interests
+        return [];
+    }
+}
+
 require_once '../models/Interest.php';
 
 class InterestController {
