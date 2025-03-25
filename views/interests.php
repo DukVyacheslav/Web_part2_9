@@ -24,7 +24,10 @@
                 <li class="category"><?php echo $category; ?>
                     <ul>
                         <?php foreach ($interests as $interest): ?>
-                            <li class="subcategory"><?php echo $interest; ?> - <?php echo Interest::$descriptions[$interest]; ?></li>
+                            <li>
+                                <span class="subcategory"><?php echo $interest; ?></span> - 
+                                <span class="description"><?php echo Interest::$descriptions[$interest]; ?></span>
+                            </li>
                         <?php endforeach; ?>
                     </ul>
                 </li>

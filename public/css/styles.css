@@ -3,6 +3,9 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    min-height: 100vh; /* Минимальная высота = высота экрана */
+    display: flex; /* Включаем flexbox */
+    flex-direction: column; /* Элементы выстраиваются вертикально */
 }
 
 header {
@@ -32,6 +35,7 @@ main {
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
+    flex: 1; /* Main растягивается, занимая всё доступное пространство */
 }
 
 table {
@@ -105,17 +109,20 @@ footer {
     text-align: center;
     padding: 10px;
     width: 100%;
-    /* Убрано: position: fixed; */
-    /* Убрано: bottom: 0; */
+    /* Оставляем без position: fixed, футер будет внизу благодаря flex */
 }
 
-/* Добавленные стили для категорий и подкатегорий */
 .category {
     font-weight: bold;
-    color: #00225f; /* Цвет из вашей темы */
+    color: #00225f;
     font-size: 18px;
 }
+
 .subcategory {
     font-weight: bold;
     color: #333;
+}
+
+.description {
+    font-weight: normal; /* Описания не жирные */
 }
