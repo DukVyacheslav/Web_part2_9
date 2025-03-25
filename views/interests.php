@@ -21,10 +21,10 @@
         <h2>Мои интересы</h2>
         <ul>
             <?php foreach (Interest::$categories as $category => $interests): ?>
-                <li><?php echo $category; ?>
+                <li class="category"><?php echo $category; ?>
                     <ul>
                         <?php foreach ($interests as $interest): ?>
-                            <li><?php echo $interest; ?> - <?php echo Interest::$descriptions[$interest]; ?></li>
+                            <li class="subcategory"><?php echo $interest; ?> - <?php echo Interest::$descriptions[$interest]; ?></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>

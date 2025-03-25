@@ -100,11 +100,22 @@ input[type="submit"]:hover {
 }
 
 footer {
-    background-color: #003087;
+    background-color: #00225f;
     color: white;
     text-align: center;
     padding: 10px;
-    position: fixed;
-    bottom: 0;
     width: 100%;
+    /* Убрано: position: fixed; */
+    /* Убрано: bottom: 0; */
+}
+
+/* Добавленные стили для категорий и подкатегорий */
+.category {
+    font-weight: bold;
+    color: #00225f; /* Цвет из вашей темы */
+    font-size: 18px;
+}
+.subcategory {
+    font-weight: bold;
+    color: #333;
 }
