@@ -2,8 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Контакт</title>
-    <link rel="stylesheet" href="/myproject/public/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/myproject/public/css/styles.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <header>
@@ -18,17 +20,28 @@
         </nav>
     </header>
     <main>
-        <h2>Контакт</h2>
-        <?php
-        if (isset($success_message)) echo "<p class='success'>$success_message</p>";
-        if (isset($error_message)) echo "<div class='error'>$error_message</div>";
-        ?>
-        <form method="post" action="?page=contact">
-            <label>Имя: <input type="text" name="name" value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>"></label>
-            <label>Email: <input type="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>"></label>
-            <label>Сообщение: <textarea name="message"><?php echo isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''; ?></textarea></label>
-            <input type="submit" value="Отправить">
-        </form>
+        <section class="card">
+            <h2>Связаться со мной</h2>
+            <?php
+            if (isset($success_message)) echo "<p class='success-message'>$success_message</p>";
+            if (isset($error_message)) echo "<div class='error-message'>$error_message</div>";
+            ?>
+            <form method="post" action="?page=contact">
+                <label>
+                    Имя:
+                    <input type="text" name="name" value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>" placeholder="Ваше имя">
+                </label>
+                <label>
+                    Email:
+                    <input type="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" placeholder="Ваш email">
+                </label>
+                <label>
+                    Сообщение:
+                    <textarea name="message" placeholder="Ваше сообщение"><?php echo isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''; ?></textarea>
+                </label>
+                <input type="submit" value="Отправить">
+            </form>
+        </section>
     </main>
     <footer>
         <p>© 2025 Мой сайт</p>
