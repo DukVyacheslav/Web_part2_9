@@ -22,7 +22,9 @@
     <main>
         <section class="card">
             <h2>Дук Вячеслав Николаевич</h2>
-            <img src="/myproject/public/images/photo.jpg" alt="Фото Вячеслава Николаевича" class="profile-photo">
+            <div class="photo-container">
+                <img src="/myproject/public/images/photo.jpg" alt="Фото Вячеслава Николаевича" class="profile-photo">
+            </div>
             <p>Это главная страница моего сайта, созданного в рамках ЛАБОРАТОРНАЯ РАБОТА №8
                 «Исследование архитектуры MVC приложения и возможностей обработки
                 данных HTML-форм на стороне сервера с использованием языка PHP»</p>

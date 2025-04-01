@@ -2,8 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мои интересы</title>
-    <link rel="stylesheet" href="/myproject/public/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/myproject/public/css/styles.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <header>
@@ -18,21 +20,24 @@
         </nav>
     </header>
     <main>
-        <h2>Мои интересы</h2>
-        <ul>
-            <?php foreach (Interest::$categories as $category => $interests): ?>
-                <li class="category"><?php echo $category; ?>
-                    <ul>
-                        <?php foreach ($interests as $interest): ?>
-                            <li>
-                                <span class="subcategory"><?php echo $interest; ?></span> - 
-                                <span class="description"><?php echo Interest::$descriptions[$interest]; ?></span>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </li>
-            <?php endforeach; ?>
-        </ul>
+        <section class="card">
+            <h2>Мои интересы</h2>
+            <ul class="interest-list">
+                <?php foreach (Interest::$categories as $category => $interests): ?>
+                    <li class="category">
+                        <h3><?php echo htmlspecialchars($category); ?></h3>
+                        <ul class="subcategory-list">
+                            <?php foreach ($interests as $interest): ?>
+                                <li>
+                                    <span class="subcategory"><?php echo htmlspecialchars($interest); ?></span> - 
+                                    <span class="description"><?php echo htmlspecialchars(Interest::$descriptions[$interest]); ?></span>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </section>
     </main>
     <footer>
         <p>© 2025 Мой сайт</p>

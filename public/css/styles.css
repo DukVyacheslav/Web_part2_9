@@ -73,7 +73,7 @@ main {
     border-radius: 15px;
     padding: 2rem;
     width: 100%;
-    max-width: 600px;
+    max-width: 1000px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -94,6 +94,15 @@ p {
     font-size: 1rem;
     opacity: 0.9;
     margin-bottom: 1rem;
+    text-align: center;
+}
+
+/* Контейнер для фото */
+.photo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
 }
 
 /* Стили для фото на главной странице */
@@ -102,9 +111,127 @@ p {
     max-width: 600px;
     height: auto;
     border-radius: 10px;
-    margin: 1rem 0;
     display: block;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Сетка для фотоальбома */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.photo-item-container {
+    text-align: center;
+    min-width: 150px;
+}
+
+.photo-item {
+    width: 100%;
+    height: 350px;
+    border-radius: 10px;
+    object-fit: cover;
+    object-position: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.photo-item:hover {
+    transform: scale(1.05);
+}
+
+.photo-caption {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    color: #FFFFFF;
+    opacity: 0.8;
+}
+
+/* Стили для списка интересов */
+.interest-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.category {
+    margin-bottom: 1.5rem;
+}
+
+.category h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #FF6F61;
+}
+
+.subcategory-list {
+    list-style-type: disc;
+    padding-left: 2rem;
+}
+
+.subcategory {
+    font-weight: 500;
+    color: #FFFFFF;
+}
+
+.description {
+    font-style: italic;
+    color: #D3D3D3;
+    margin-left: 0.5rem;
+}
+
+/* Модальное окно (lightbox) */
+.lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox-content {
+    position: relative;
+    text-align: center;
+}
+
+#lightbox-image {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    display: block;
+    margin: 0 auto;
+}
+
+#lightbox-caption {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: #FFFFFF;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 2rem;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    z-index: 1002;
+}
+
+.close:hover {
+    color: #FF6F61;
 }
 
 /* Форма (для contact.php) */
@@ -168,7 +295,7 @@ input[type="submit"]:active {
     transform: scale(0.95);
 }
 
-/* Сообщения об успехе/ошибке (для contact.php) */
+/* Сообщения об успехе/ошибке */
 .success-message {
     background: rgba(0, 255, 0, 0.2);
     color: #00FF00;
@@ -203,6 +330,12 @@ footer p {
 }
 
 /* Адаптивность */
+@media (max-width: 900px) {
+    .photo-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
 @media (max-width: 600px) {
     header {
         flex-direction: column;
@@ -225,12 +358,28 @@ footer p {
         max-width: 90%;
     }
 
+    .photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .photo-item {
+        height: 250px;
+    }
+
+    .interest-list, .subcategory-list {
+        padding-left: 1rem;
+    }
+
     input[type="submit"] {
         padding: 0.6rem 1.2rem;
         font-size: 0.9rem;
     }
 
     .profile-photo {
+        max-width: 100%;
+    }
+
+    #lightbox-image {
         max-width: 100%;
     }
 }
