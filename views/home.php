@@ -11,6 +11,16 @@
     <header>
         <img src="/myproject/public/images/logo.png" alt="Логотип" width="50">
         <h1>Главная страница</h1>
+        <div id="clock" style="font-size: 1.2em; font-weight: bold; display: inline-block; margin-right: 20px;"></div>
+        <script>
+            function updateClock() {
+                const now = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+                document.getElementById('clock').textContent = now.toLocaleDateString('ru-RU', options);
+            }
+            setInterval(updateClock, 1000);
+            updateClock();
+        </script>
         <nav>
             <a href="?page=home">Главная страница</a>
             <a href="?page=photoalbum">Фотоальбом</a>
