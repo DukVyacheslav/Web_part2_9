@@ -3,6 +3,8 @@ require_once 'Model.php';
 
 class Blog extends Model {
     protected static $tablename = 'blogs';
+
+    protected $validator;
     
     public $id;
     public $name;
@@ -12,14 +14,31 @@ class Blog extends Model {
     
     public function __construct() {
         parent::__construct();
+        static::getFields();
         $this->validator = new ResultsVerification();
         $this->validator->SetRule('name', 'IsNotEmpty');
         $this->validator->SetRule('text', 'IsNotEmpty');
     }
     
+    public static function createTable() {
+        try {
+            $sql = "CREATE TABLE IF NOT EXISTS blogs (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                text TEXT NOT NULL,
+                img VARCHAR(255) DEFAULT NULL,
+                data DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+            return static::$pdo->exec($sql) !== false;
+        } catch (PDOException $e) {
+            error_log("Ошибка создания таблицы blogs: " . $e->getMessage());
+            return false;
+        }
+    }
+    
     public function validate($post_data) {
         $this->validator->Validate($post_data);
-        return count($this->validator->Errors) == 0;
+        return count($this->validator->errors) == 0;
     }
 
     public static function getPaginated($page = 1, $per_page = 10) {

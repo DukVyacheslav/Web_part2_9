@@ -18,6 +18,7 @@ class BlogController {
         $per_page = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 10;
         
         $result = Blog::getPaginated($page, $per_page);
+        // Удаляем временный вывод var_dump
         $this->view->render('blog/index.php', 'Мой блог', [
             'posts' => $result['items'],
             'total' => $result['total'],
