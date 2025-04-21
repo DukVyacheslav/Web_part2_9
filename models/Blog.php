@@ -16,8 +16,8 @@ class Blog extends Model {
         parent::__construct();
         static::getFields();
         $this->validator = new ResultsVerification();
-        $this->validator->SetRule('name', 'IsNotEmpty');
-        $this->validator->SetRule('text', 'IsNotEmpty');
+        $this->validator->setRule('name', 'IsNotEmpty');
+        $this->validator->setRule('text', 'IsNotEmpty');
     }
     
     public static function createTable() {

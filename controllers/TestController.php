@@ -26,16 +26,35 @@ class TestController {
         }
     }
     
+    private function getCorrectAnswers() {
+        // Пример правильных ответов, ключ - вопрос, значение - правильный ответ
+        return [
+            'q1' => 'a',
+            'q2' => 'b',
+            'q3' => 'c',
+        ];
+    }
+
     public function save() {
         $errors = [];
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 if ($this->model->validate($_POST)) {
+                    $userAnswers = $_POST['answers'];
+                    $correctAnswers = $this->getCorrectAnswers();
+                    $isCorrect = true;
+                    foreach ($correctAnswers as $question => $correctAnswer) {
+                        if (!isset($userAnswers[$question]) || $userAnswers[$question] !== $correctAnswer) {
+                            $isCorrect = false;
+                            break;
+                        }
+                    }
+                    
                     $this->model->date = date('Y-m-d H:i:s');
                     $this->model->fio = $_POST['fio'];
-                    $this->model->answers = json_encode($_POST['answers']);
-                    $this->model->is_correct = isset($_POST['is_correct']) ? 1 : 0;
+                    $this->model->answers = json_encode($userAnswers);
+                    $this->model->is_correct = $isCorrect ? 1 : 0;
                     
                     if (!$this->model->save()) {
                         $errors[] = 'Ошибка при сохранении результатов теста';
