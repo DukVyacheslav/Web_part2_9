@@ -1,57 +1,72 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Главная страница</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/myproject/public/css/styles.css?v=<?php echo time(); ?>">
-</head>
-<body>
-    <header>
-        <img src="/myproject/public/images/logo.png" alt="Логотип" width="50">
-        <h1>Главная страница</h1>
-        <div id="clock" style="font-size: 1.2em; font-weight: bold; display: inline-block; margin-right: 20px;"></div>
-        <script>
-            function updateClock() {
-                const now = new Date();
-                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-                document.getElementById('clock').textContent = now.toLocaleDateString('ru-RU', options);
-            }
-            setInterval(updateClock, 1000);
-            updateClock();
-        </script>
-        <nav>
-            <a href="?page=home">Главная страница</a>
-            <a href="?page=photoalbum">Фотоальбом</a>
-            <a href="?page=interests">Мои интересы</a>
-            <a href="?page=contact">Контакт</a>
-            <a href="?page=test">Тест</a>
-        </nav>
-    </header>
-    <main>
-        <section class="card">
-            <h2>Дук Вячеслав Николаевич</h2>
-            <div class="photo-container">
-                <img src="/myproject/public/images/photo.jpg" alt="Фото Вячеслава Николаевича" class="profile-photo">
+<?php require_once 'views/header.php'; ?>
+
+<div class="container">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <img src="public/images/photo.jpg" alt="Фото Вячеслава Николаевича" class="img-fluid rounded mb-3" style="max-width: 300px;">
+                    <div id="clock" class="h5 mb-3"></div>
+                </div>
+                <div class="col-md-8">
+                    <h1 class="card-title">Дук Вячеслав Николаевич</h1>
+                    <p class="card-text">
+                        Это главная страница моего сайта, созданного в рамках ЛАБОРАТОРНАЯ РАБОТА №9
+                        "Исследование возможностей хранения данных на стороне сервера.
+                        Работа с файлами. Работа с реляционными СУБД"
+                    </p>
+                    
+                    <h2>Моя автобиография:</h2>
+                    <p class="card-text">
+                        Здравствуйте! Меня зовут Дук Вячеслав Николаевич. Я родился 25 июля 1983 года в городе Севастополе.
+                        С детства я увлекался технологиями. Это привело меня к выбору профессии в области машиностроения.
+                    </p>
+                    
+                    <p class="card-text">
+                        Я окончил СевГУ по специальности Технология Машиностроения. После окончания учебы, 
+                        я начал работать в компании Таврида Электрик.
+                    </p>
+                    
+                    <h3>Профессиональные достижения:</h3>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item">Освоил профессию оператора станков с ПУ</li>
+                        <li class="list-group-item">Освоил профессию мастера участка</li>
+                        <li class="list-group-item">Освоил профессию технолога</li>
+                    </ul>
+                    
+                    <p class="card-text">
+                        В свободное время я люблю читать, играть в приставку. 
+                        Это помогает мне расслабиться и получить новые идеи для работы.
+                    </p>
+                    
+                    <blockquote class="blockquote mt-3">
+                        <p class="mb-0">
+                            Моя жизненная философия: Счастье приходит, когда вы перестаёте ждать, 
+                            что оно придёт само, и предпринимаете шаги, чтобы оно пришло.
+                        </p>
+                    </blockquote>
+                </div>
             </div>
-            <p>Это главная страница моего сайта, созданного в рамках ЛАБОРАТОРНАЯ РАБОТА №8
-                «Исследование архитектуры MVC приложения и возможностей обработки
-                данных HTML-форм на стороне сервера с использованием языка PHP»</p>
-            <h2>Моя автобиография:</h2>
-            <p>Здравствуйте! Меня зовут Дук Вячеслав Николаевич. Я родился 25 июля 1983 года в городе Севастополе.
-С детства я увлекался технологиями. Это привело меня к выбору профессии в области машиностроения.
-Я окончил СевГУ по специальности Технология Машиностроения. После окончания учебы, я начал работать в компании Таврида Электрик.
-За время своей карьеры я достиг следующих успехов:
-1. Освоил профессию оператора станков с ПУ.
-2. Освоил профессию мастера участка.
-3. Освоил профессию технолога.
-В свободное время я люблю читать, играть в приставку. Это помогает мне расслабиться и получить новые идеи для работы.
-Моя жизненная философия: Счастье приходит, когда вы перестаёте ждать, что оно придёт само, и предпринимаете шаги, чтобы оно пришло.</p>
-        </section>
-    </main>
-    <footer>
-        <p>© 2025 Мой сайт</p>
-    </footer>
-</body>
-</html>
+        </div>
+    </div>
+</div>
+
+<script>
+function updateClock() {
+    const now = new Date();
+    const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit' 
+    };
+    document.getElementById('clock').textContent = now.toLocaleDateString('ru-RU', options);
+}
+setInterval(updateClock, 1000);
+updateClock();
+</script>
+
+<?php require_once 'views/footer.php'; ?>

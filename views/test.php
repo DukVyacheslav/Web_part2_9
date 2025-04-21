@@ -1,92 +1,116 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тест по дисциплине</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/myproject/public/css/styles.css?v=<?php echo time(); ?>">
-</head>
-<body>
-    <header>
-        <img src="/myproject/public/images/logo.png" alt="Логотип" width="50">
-        <h1>Тест по дисциплине</h1>
-        <nav>
-            <a href="?page=home">Главная страница</a>
-            <a href="?page=photoalbum">Фотоальбом</a>
-            <a href="?page=interests">Мои интересы</a>
-            <a href="?page=contact">Контакт</a>
-            <a href="?page=test">Тест</a>
-        </nav>
-    </header>
-    <main>
-        <section class="card">
-            <h2>Тест по дисциплине</h2>
-            <?php
-            if (isset($test_errors)) echo "<div class='error-message'>$test_errors</div>";
-            if (isset($test_result)) echo "<div class='success-message'>$test_result</div>";
+<?php require_once 'views/header.php'; ?>
+
+<div class="container">
+    <h1>Тест по дисциплине</h1>
+    
+    <?php if (isset($error)): ?>
+    <div class="alert alert-danger">
+        <?= htmlspecialchars($error) ?>
+    </div>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['errors'])): ?>
+        <div class="alert alert-danger">
+            <?php 
+            foreach ($_SESSION['errors'] as $error) {
+                echo htmlspecialchars($error) . '<br>';
+            }
+            unset($_SESSION['errors']);
             ?>
-            <form method="post" action="?page=test">
-                <label>
-                    Фамилия Имя Отчество:
-                    <input type="text" name="fullName" value="<?php echo isset($_POST['fullName']) ? htmlspecialchars($_POST['fullName']) : ''; ?>" placeholder="Введите ФИО полностью">
-                </label>
+        </div>
+    <?php endif; ?>
 
-                <label>
-                    Группа:
-                    <input type="text" list="groups" name="group" value="<?php echo isset($_POST['group']) ? htmlspecialchars($_POST['group']) : ''; ?>" placeholder="Выберите группу">
-                    <datalist id="groups">
-                        <option value="Группа1">
-                        <option value="Группа2">
-                        <option value="Группа3">
-                    </datalist>
-                </label>
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="alert alert-success">
+            <?= htmlspecialchars($_SESSION['success']) ?>
+            <?php unset($_SESSION['success']); ?>
+        </div>
+    <?php endif; ?>
+    
+    <form action="index.php?controller=test&action=save" method="post">
+        <div class="form-group">
+            <label for="fio">ФИО:</label>
+            <input type="text" class="form-control" id="fio" name="fio" required>
+        </div>
 
-                <label>
-                    Вопрос 1:
-                    <input type="text" readonly value="Выберите один вариант ответа:" style="background: none; border: none; padding: 0;">
-                    <div class="radio-group">
-                        <label class="radio-label">
-                            <input type="radio" name="question1" value="variant1" <?php echo (isset($_POST['question1']) && $_POST['question1'] === 'variant1') ? 'checked' : ''; ?>>
-                            Вариант1
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="question1" value="variant2" <?php echo (isset($_POST['question1']) && $_POST['question1'] === 'variant2') ? 'checked' : ''; ?>>
-                            Вариант2
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="question1" value="variant3" <?php echo (isset($_POST['question1']) && $_POST['question1'] === 'variant3') ? 'checked' : ''; ?>>
-                            Вариант3
-                        </label>
-                    </div>
-                </label>
-
-                <label>
-                    Вопрос 2:
-                    <input type="text" list="answers2" name="question2" value="<?php echo isset($_POST['question2']) ? htmlspecialchars($_POST['question2']) : ''; ?>" placeholder="Выберите вариант ответа">
-                    <datalist id="answers2">
-                        <option value="Вариант 1">
-                        <option value="Вариант 2">
-                        <option value="Вариант 3">
-                        <option value="Вариант 4">
-                        <option value="Вариант 5">
-                    </datalist>
-                </label>
-
-                <label>
-                    Вопрос 3:
-                    <input type="text" name="question3" value="<?php echo isset($_POST['question3']) ? htmlspecialchars($_POST['question3']) : ''; ?>" placeholder="Введите ваш ответ">
-                </label>
-
-                <div class="button-group">
-                    <input type="reset" value="Очистить форму" class="secondary-button">
-                    <input type="submit" value="Отправить форму">
+        <div class="questions">
+            <!-- Вопрос 1 -->
+            <div class="form-group">
+                <p>1. Что такое PHP?</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="answers[1]" value="a" required>
+                    <label class="form-check-label">A) Язык программирования общего назначения</label>
                 </div>
-            </form>
-        </section>
-    </main>
-    <footer>
-        <p>© 2025 Мой сайт</p>
-    </footer>
-</body>
-</html>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="answers[1]" value="b">
+                    <label class="form-check-label">B) Скриптовый язык программирования</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="answers[1]" value="c">
+                    <label class="form-check-label">C) Система управления базами данных</label>
+                </div>
+            </div>
+
+            <!-- Вопрос 2 -->
+            <div class="form-group">
+                <p>2. Какая функция используется для подключения к MySQL в PDO?</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="answers[2]" value="a" required>
+                    <label class="form-check-label">A) mysql_connect()</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="answers[2]" value="b">
+                    <label class="form-check-label">B) new PDO()</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="answers[2]" value="c">
+                    <label class="form-check-label">C) mysqli_connect()</label>
+                </div>
+            </div>
+
+            <!-- Вопрос 3 -->
+            <div class="form-group">
+                <p>3. Как получить значение POST-параметра в PHP?</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="answers[3]" value="a" required>
+                    <label class="form-check-label">A) $POST['parameter']</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="answers[3]" value="b">
+                    <label class="form-check-label">B) $_POST['parameter']</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="answers[3]" value="c">
+                    <label class="form-check-label">C) get_post('parameter')</label>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" name="is_correct" id="is_correct" value="0">
+        <button type="submit" class="btn btn-primary" onclick="checkAnswers()">Отправить</button>
+    </form>
+
+    <script>
+        function checkAnswers() {
+            const correctAnswers = {
+                1: 'b',
+                2: 'b',
+                3: 'b'
+            };
+
+            let isCorrect = true;
+            const answers = document.querySelectorAll('input[type="radio"]:checked');
+            
+            answers.forEach(answer => {
+                const questionNum = answer.name.match(/\d+/)[0];
+                if (answer.value !== correctAnswers[questionNum]) {
+                    isCorrect = false;
+                }
+            });
+
+            document.getElementById('is_correct').value = isCorrect ? '1' : '0';
+        }
+    </script>
+</div>
+
+<?php require_once 'views/footer.php'; ?>

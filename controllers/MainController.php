@@ -8,13 +8,11 @@ class MainController {
         ];
         
         // Подключаем представление
-        require_once __DIR__ . '/../views/main.php';
+        require_once __DIR__ . '/../views/home.php';
     }
     
     public function handle() {
         // Можно добавить логику для главной страницы
-        include '../views/main.php';
+        require_once __DIR__ . '/../views/home.php';
     }
 }
-
-(new MainController())->handle();

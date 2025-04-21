@@ -1,55 +1,87 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Фотоальбом</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/myproject/public/css/styles.css?v=<?php echo time(); ?>">
-</head>
-<body>
-    <header>
-        <img src="/myproject/public/images/logo.png" alt="Логотип" width="50">
-        <h1>Фотоальбом</h1>
-        <nav>
-            <a href="?page=home">Главная страница</a>
-            <a href="?page=photoalbum">Фотоальбом</a>
-            <a href="?page=interests">Мои интересы</a>
-            <a href="?page=contact">Контакт</a>
-            <a href="?page=test">Тест</a>
-        </nav>
-    </header>
-    <main>
-        <section class="card">
-            <h2>Мои фотографии</h2>
-            <p>Здесь собраны мои лучшие моменты. Наслаждайтесь просмотром!</p>
-            <div class="photo-grid">
-                <?php
-                for ($i = 1; $i <= 15; $i++) {
-                    $file = "photo{$i}.jpg";
-                    $caption = "Фото №{$i}";
-                    ?>
-                    <div class="photo-item-container">
-                        <img src="/myproject/public/images/<?php echo htmlspecialchars($file); ?>" alt="<?php echo htmlspecialchars($caption); ?>" class="photo-item" data-index="<?php echo $i - 1; ?>">
-                        <p class="photo-caption"><?php echo htmlspecialchars($caption); ?></p>
-                    </div>
-                <?php } ?>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <p>© 2025 Мой сайт</p>
-    </footer>
+<?php require_once 'views/header.php'; ?>
 
-    <!-- Модальное окно -->
-    <div id="lightbox" class="lightbox">
-        <span id="close-lightbox" class="close">×</span>
-        <div class="lightbox-content">
-            <img id="lightbox-image" src="" alt="Увеличенное фото">
-        </div>
-        <p id="lightbox-caption"></p>
+<div class="container">
+    <h1>Фотоальбом</h1>
+    
+    <?php if (isset($error)): ?>
+    <div class="alert alert-danger">
+        <?= htmlspecialchars($error) ?>
     </div>
+    <?php endif; ?>
+    
+    <div class="row photo-grid">
+        <?php foreach ($photos as $photo): ?>
+        <div class="col">
+            <div class="card">
+                <img src="public/images/<?= htmlspecialchars($photo->filename) ?>" 
+                     alt="<?= htmlspecialchars($photo->caption) ?>" 
+                     class="card-img-top"
+                     data-toggle="modal"
+                     data-target="#photoModal"
+                     data-caption="<?= htmlspecialchars($photo->caption) ?>">
+                <div class="card-body">
+                    <p class="card-text"><?= htmlspecialchars($photo->caption) ?></p>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+</div>
 
-    <script src="/myproject/public/js/script.js?v=<?php echo time(); ?>"></script>
-</body>
-</html>
+<!-- Модальное окно для просмотра фотографий -->
+<div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img src="" class="img-fluid" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Открытие фото в модальном окне
+    $('.card-img-top').click(function() {
+        const src = $(this).attr('src');
+        const caption = $(this).data('caption');
+        
+        $('#photoModal').find('.modal-title').text(caption);
+        $('#photoModal').find('.modal-body img').attr('src', src);
+    });
+
+    // Навигация по фото с помощью стрелок
+    $(document).keydown(function(e) {
+        if ($('#photoModal').is(':visible')) {
+            const currentImg = $('#photoModal').find('.modal-body img').attr('src');
+            const images = $('.card-img-top');
+            let currentIndex = -1;
+            
+            images.each(function(index) {
+                if ($(this).attr('src') === currentImg) {
+                    currentIndex = index;
+                    return false;
+                }
+            });
+
+            if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                const prevImg = images.eq(currentIndex - 1);
+                $('#photoModal').find('.modal-title').text(prevImg.data('caption'));
+                $('#photoModal').find('.modal-body img').attr('src', prevImg.attr('src'));
+            } else if (e.key === 'ArrowRight' && currentIndex < images.length - 1) {
+                const nextImg = images.eq(currentIndex + 1);
+                $('#photoModal').find('.modal-title').text(nextImg.data('caption'));
+                $('#photoModal').find('.modal-body img').attr('src', nextImg.attr('src'));
+            }
+        }
+    });
+});
+</script>
+
+<?php require_once 'views/footer.php'; ?>

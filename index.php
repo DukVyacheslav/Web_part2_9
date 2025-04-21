@@ -1,55 +1,53 @@
 <?php
-require_once 'models/Interest.php';
-require_once 'models/Photo.php';
-require_once 'models/FormValidation.php';
-require_once 'models/ResultsVerification.php';
+session_start();
 
-$page = isset($_GET['page']) ? $_GET['page'] : 'home';
+require_once 'controllers/MainController.php';
+require_once 'controllers/InterestController.php';
+require_once 'controllers/PhotoController.php';
+require_once 'controllers/ContactController.php';
+require_once 'controllers/TestController.php';
+require_once 'controllers/BlogController.php';
+require_once 'controllers/GuestbookController.php';
 
-// Обработка формы "Контакт"
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $page === 'contact') {
-    $validator = new FormValidation();
-    $validator->setRule('name', 'notEmpty');
-    $validator->setRule('email', 'email');
-    $validator->setRule('message', 'notEmpty');
+// Определяем контроллер
+$controller = isset($_GET['controller']) ? $_GET['controller'] : 'main';
+$action = isset($_GET['action']) ? $_GET['action'] : 'index';
 
-    if ($validator->validate($_POST)) {
-        $success_message = "Форма успешно отправлена!";
-    } else {
-        $error_message = $validator->showErrors();
-    }
-}
-
-// Обработка формы "Тест"
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $page === 'test') {
-    $validator = new ResultsVerification();
-    $validator->setRule('question1', 'notEmpty');
-    $validator->setRule('question2', 'notEmpty');
-    $validator->setRule('question3', 'notEmpty');
-
-    if ($validator->validate($_POST)) {
-        $test_result = $validator->showResults();
-    } else {
-        $test_errors = $validator->showErrors();
-        $test_result = $validator->showResults();
-    }
-}
-
-// Маршрутизация страниц
-switch ($page) {
-    case 'photoalbum':
-        include 'views/photoalbum.php';
+// Создаем экземпляр соответствующего контроллера
+switch ($controller) {
+    case 'main':
+        $controller = new MainController();
         break;
     case 'interests':
-        include 'views/interests.php';
+        $controller = new InterestController();
+        break;
+    case 'photo':
+        $controller = new PhotoController();
         break;
     case 'contact':
-        include 'views/contact.php';
+        $controller = new ContactController();
         break;
     case 'test':
-        include 'views/test.php';
+        $controller = new TestController();
+        break;
+    case 'blog':
+        $controller = new BlogController();
+        break;
+    case 'guestbook':
+        $controller = new GuestbookController();
         break;
     default:
-        include 'views/home.php';
+        header('HTTP/1.1 404 Not Found');
+        echo 'Страница не найдена';
+        exit;
+}
+
+// Вызываем соответствующий метод контроллера
+if (method_exists($controller, $action)) {
+    $controller->$action();
+} else {
+    header('HTTP/1.1 404 Not Found');
+    echo 'Действие не найдено';
+    exit;
 }
 ?>
